@@ -7,12 +7,12 @@ import java.util.Map;
 public class Account {
 
     private String accountNumber;
-
     private Map<Currency, BigDecimal> deposits;
 
-    public Account(String accountNumber, Map<Currency, BigDecimal> deposits) {
+    public Account(String accountNumber, boolean debitAccount, Map<Currency, BigDecimal> deposits) {
         this.accountNumber = accountNumber;
         this.deposits = deposits;
+
     }
 
     public Map<Currency, BigDecimal> getDeposits() {

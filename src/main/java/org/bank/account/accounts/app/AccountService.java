@@ -5,11 +5,12 @@ import org.bank.account.accounts.infra.AccountsProvider;
 import org.bank.account.accounts.model.Account;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class AccountService {
 
-    private static AccountService instance;
     private AccountService() {}
+    private static AccountService instance;
 
     public static AccountService getInstance(){
         if(instance == null)
@@ -20,12 +21,11 @@ public class AccountService {
     private final Map<String, Account> accounts = AccountsProvider.getAccounts();
 
     public Account getAccount(String accountNumber) throws AccountNotFoundException {
-        try {
-            return accounts.get(accountNumber);
-        } catch (NullPointerException e) {
-            throw new AccountNotFoundException("Account not found: " + accountNumber);
-        }
+            return Optional
+                    .ofNullable(accounts.get(accountNumber))
+                    .orElseThrow(() -> new AccountNotFoundException("Account not found: " + accountNumber));
     }
+
 
     public void updateAccount(Account account) {
         accounts.put(account.getAccountNumber(), account);

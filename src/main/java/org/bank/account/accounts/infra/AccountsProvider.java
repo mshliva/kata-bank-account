@@ -15,25 +15,33 @@ public class AccountsProvider {
         accounts.put("RU 12 1444 166666 18888888",
                         new Account(
                                 "RU 12 1444 166666 18888888",
+                                false,
                                 new HashMap<>(Map.of(
                                     Currency.getInstance("USD"),new BigDecimal("100"),
                                     Currency.getInstance("EUR"), new BigDecimal("23"),
                                     Currency.getInstance("GBP"), new BigDecimal("0")
-                                ))));
+                                ))
+                        ));
         accounts.put("PL 22 2444 266666 28888888",
-                        new Account("PL 22 2444 266666 28888888",
+                        new Account(
+                                "PL 22 2444 266666 28888888",
+                                true,
                                 new HashMap<>(Map.of(
                                     Currency.getInstance("USD"), new BigDecimal("150"),
                                     Currency.getInstance("EUR"), new BigDecimal("2000"),
                                     Currency.getInstance("GBP"), new BigDecimal("5000")
-                                ))));
+                                ))
+                        ));
         accounts.put("US 32 3444 366666 38888888",
-                        new Account("US 32 3444 366666 38888888",
+                        new Account(
+                                "US 32 3444 366666 38888888",
+                                true,
                                 new HashMap<>(Map.of(
                                     Currency.getInstance("USD"), new BigDecimal("100000021"),
                                     Currency.getInstance("EUR"), new BigDecimal("50000012"),
                                     Currency.getInstance("GBP"), new BigDecimal("312999")
-                                ))));
+                                ))
+                        ));
     }
 
     public static Map<String, Account> getAccounts() {
