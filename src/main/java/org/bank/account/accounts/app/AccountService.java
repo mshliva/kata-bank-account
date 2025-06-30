@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class AccountService {
 
-    private AccountService() {}
+    public AccountService() {}
     private static AccountService instance;
 
     public static AccountService getInstance(){
