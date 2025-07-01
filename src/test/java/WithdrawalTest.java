@@ -1,3 +1,4 @@
+import config.ConfigurationClass;
 import org.bank.account.accounts.error.AccountNotFoundException;
 import org.bank.account.accounts.error.DepositsException;
 import org.bank.account.operations.app.WithdrawalService;
@@ -9,8 +10,9 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class WithdrawalTest {
+public class WithdrawalTest extends ConfigurationClass {
 
     WithdrawalService withdrawalService = new WithdrawalService();
 
@@ -32,5 +34,15 @@ public class WithdrawalTest {
     public void givenGbpCurrencyAndNonDebitAccountWhenDebitWithdrawalThenDecreaseBalance() throws DepositsException, WithdrawalException, AccountNotFoundException {
         withdrawalService.doWithdrawal("US 32 3444 366666 38888888", new BigDecimal("312999.01"), Currency.getInstance("GBP"));
         assertEquals(new BigDecimal("-0.01"), withdrawalService.getBalance("US 32 3444 366666 38888888", Currency.getInstance("GBP")));
+    }
+
+    @Test
+    @DisplayName("Negative: Handling Exception in doWithdrawal")
+    public void givenWithdrawalReceiveExceptionExpectNewException() {
+        assertThrows(
+                WithdrawalException.class,
+                () -> withdrawalService.doWithdrawal("USA!", new BigDecimal("1"), Currency.getInstance("GBP")),
+                WithdrawalService.SOMETHING_WENT_WRONG_MESSAGE
+        );
     }
 }

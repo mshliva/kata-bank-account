@@ -1,3 +1,5 @@
+package config;
+
 import org.bank.account.accounts.app.AccountService;
 import org.bank.account.operations.app.DepositService;
 import org.bank.account.operations.app.WithdrawalService;
@@ -11,7 +13,8 @@ public abstract class ConfigurationClass {
 
     @BeforeEach
     public void setup() {
-        accountService = new AccountService();
+        accountService = AccountService.getInstance();
+        accountService.setAccounts(AccountProvider.prepareAccounts());
         depositService = new DepositService();
         withdrawalService = new WithdrawalService();
     }

@@ -18,34 +18,37 @@ import java.util.Optional;
 public class WithdrawalService {
 
     private final AccountService accountService = AccountService.getInstance();
+    public static final String NO_DEPOSIT_MESSAGE = "No deposit of given currency available.";
+    public static final String SOMETHING_WENT_WRONG_MESSAGE = "Something went wrong. Please contact support.";
+
 
     public BigDecimal getBalance(String accountNumber, Currency currency) throws DepositsException {
             return getDeposits(accountNumber).get(currency);
     }
 
-    public void doWithdrawal(String accountNumber, BigDecimal amount, Currency currency) throws DepositsException, AccountNotFoundException, WithdrawalException {
+    public synchronized void doWithdrawal(String accountNumber, BigDecimal amount, Currency currency) throws WithdrawalException {
             try {
                 getDeposits(accountNumber).merge(currency, amount, BigDecimal::subtract);
                 Account account = accountService.getAccount(accountNumber);
-                account.getTransactionHistory().addTransaction(
+                account.transactionHistory().addTransaction(
                         new Transaction(
                                 LocalDate.now(),
                                 TransactionType.WITHDRAWAL,
                                 amount,
-                                account.getDeposits().get(currency),
+                                account.deposits().get(currency),
                                 currency));
             } catch (DepositsException | AccountNotFoundException e) {
-                throw new WithdrawalException("Something went wrong. Please Contact support.");
+                throw new WithdrawalException(SOMETHING_WENT_WRONG_MESSAGE);
             }
     }
 
     private Map<Currency, BigDecimal> getDeposits(String accountNumber) throws DepositsException {
         try {
             return Optional
-                    .ofNullable(accountService.getAccount(accountNumber).getDeposits())
-                    .orElseThrow(() -> new CurrencyAbsentException("No deposit of given currency available."));
+                    .ofNullable(accountService.getAccount(accountNumber).deposits())
+                    .orElseThrow(() -> new CurrencyAbsentException(NO_DEPOSIT_MESSAGE));
         } catch (AccountNotFoundException | CurrencyAbsentException e) {
-            throw new DepositsException("Something went wrong. Please contact support.");
+            throw new DepositsException(SOMETHING_WENT_WRONG_MESSAGE);
         }
     }
 }

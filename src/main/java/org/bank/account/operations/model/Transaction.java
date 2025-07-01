@@ -23,26 +23,6 @@ public class Transaction {
         this.currency = currency;
     }
 
-    public UUID getIdentifier() {
-        return identifier;
-    }
-
-    public LocalDate getLocalDate() {
-        return localDate;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
